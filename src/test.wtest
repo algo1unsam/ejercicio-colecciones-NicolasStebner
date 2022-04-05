@@ -1,6 +1,67 @@
 import capos.*
 
-test "encontrar artefactos" {
+test "Rolando encuentra espada,libro y collar(no lo agarra por la capacidad )"{
+	/*1. rolando encuentra la espada del destino (la agarra)
+2 rolando encuentra el libro de hechizos (la agarra)
+3 rolando encuentra el collar divino (no lo agarra, 
+* ya que tiene la espada y el libro encima 
+* y su capacidad es de 2)*/
+	rolando.encontrarArtefacto(espadaDelDestino)
+	rolando.encontrarArtefacto(libroDeHechizos)
+	assert.that(rolando.poseeEsteArtefacto(espadaDelDestino))
+	assert.that(rolando.poseeEsteArtefacto(libroDeHechizos))
+	rolando.encontrarArtefacto(collarDivino)
+	assert.notThat(rolando.poseeEsteArtefacto(collarDivino))
+}
+
+test "Rolando encuentra espada y libro. Va al castillo, deja todo lo que tiene 
+y luego encuentra el collar(lo agarrar), luego va al castillo y deja todo."{
+	/*1. rolando encuentra la espada del destino (la agarra)
+2 rolando encuentra el libro de hechizos (la agarra)
+* 3 rolando llega al castillo de piedra (deja en el castillo la espada y el libro de hechizos)
+4 rolando encuentra el collar divino (lo agarra)
+* 5 rolando llega al castillo de piedra de nuevo(deja el collar, 
+* con lo cual ahora el castillo tiene el collar, la espada y el libro)*/
+
+	rolando.encontrarArtefacto(espadaDelDestino)
+	rolando.encontrarArtefacto(libroDeHechizos)
+	rolando.irAlLugarDeGuardado()
+	rolando.encontrarArtefacto(collarDivino)
+	assert.that(rolando.poseeEsteArtefacto(collarDivino))
+	assert.that(rolando.poseeEsteArtefacto(espadaDelDestino))
+	assert.that(rolando.poseeEsteArtefacto(libroDeHechizos))
+	
+}
+
+test "Rolando encuentra espada, libro. Encuentra collar divino(no agarra)
+Castillo de piedra(deja todo), encuentra armadura, luego encuentra collar"{
+	/*1. rolando encuentra la espada del destino (la agarra)
+2 rolando encuentra el libro de hechizos (la agarra)
+* 3 rolando llega al castillo de piedra (deja en el castillo la espada y el libro de hechizos)
+4 rolando encuentra el collar divino (lo agarra)
+* 5 rolando llega al castillo de piedra de nuevo(deja el collar, 
+* con lo cual ahora el castillo tiene el collar, la espada y el libro)*/
+
+	rolando.encontrarArtefacto(espadaDelDestino)
+	rolando.encontrarArtefacto(libroDeHechizos)
+	rolando.encontrarArtefacto(collarDivino)
+	assert.notThat(rolando.poseeEsteArtefacto(collarDivino))
+	assert.that(rolando.poseeEsteArtefacto(espadaDelDestino))
+	assert.that(rolando.poseeEsteArtefacto(libroDeHechizos))
+	
+	rolando.irAlLugarDeGuardado()
+	rolando.encontrarArtefacto(armaduraDeAceroValyrio)
+	assert.that(rolando.poseeEsteArtefacto(armaduraDeAceroValyrio))
+	rolando.encontrarArtefacto(collarDivino)
+	assert.that(rolando.poseeEsteArtefacto(collarDivino))
+	assert.that(rolando.poseeEsteArtefacto(armaduraDeAceroValyrio))
+	assert.that(rolando.poseeEsteArtefacto(espadaDelDestino))
+	assert.that(rolando.poseeEsteArtefacto(libroDeHechizos))
+	const listaComparacion = [espadaDelDestino, libroDeHechizos, collarDivino, armaduraDeAceroValyrio, collarDivino]
+	assert.equals(listaComparacion, rolando.artefactosEncontrados())
+	
+}
+/*test "encontrar artefactos" {
 	
 }
 
@@ -14,4 +75,4 @@ test "posesiones" {
 
 test "historia" {
 	
-}
+}*/
